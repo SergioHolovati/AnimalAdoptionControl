@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  postgresdb:
+    image: postgres
+    container_name: db
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - POSTGRES_USER=${POSTGRESDB_USER}
+      - POSTGRES_PASSWORD=${POSTGRESDB_ROOT_PASSWORD}
+      - POSTGRES_DB=${POSTGRESDB_DATABASE}
+    ports:
+      - 5433:5432
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+  app:
+    container_name: animalControll
+    depends_on:
+      - postgresdb
+    build:
+      context: ../SergioHolovati
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresdb:5432/${POSTGRESDB_DATABASE}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRESDB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRESDB_ROOT_PASSWORD}
+    networks:
+      - app-network
+
+networks:
+  app-network:
