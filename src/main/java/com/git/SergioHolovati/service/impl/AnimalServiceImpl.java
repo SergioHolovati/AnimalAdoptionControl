@@ -2,6 +2,7 @@ package com.git.SergioHolovati.service.impl;
 
 import com.git.SergioHolovati.dto.AnimalDTO;
 import com.git.SergioHolovati.dto.AnimalRequestDTO;
+import com.git.SergioHolovati.dto.AnimalStatusDTO;
 import com.git.SergioHolovati.dto.FilterDTO;
 import com.git.SergioHolovati.enums.AnimalCategoryEnum;
 import com.git.SergioHolovati.enums.AnimalStatusEnum;
@@ -64,10 +65,10 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public AnimalDTO updateStatus(String id, AnimalStatusEnum status) throws ChangeSetPersister.NotFoundException {
+    public AnimalDTO updateStatus(String id, AnimalStatusDTO status) throws ChangeSetPersister.NotFoundException {
         Animal animal = repository.findById(id)
                 .orElseThrow(ChangeSetPersister.NotFoundException::new);
-        animal.setStatus(status);
+        animal.setStatus(status.getStatus());
         animal.setDateOfAdoption(LocalDate.now());
         return AnimalDTO.mapper(repository.save(animal));
     }

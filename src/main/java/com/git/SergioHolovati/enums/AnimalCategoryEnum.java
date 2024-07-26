@@ -26,7 +26,7 @@ public enum AnimalCategoryEnum {
 
     public static List<Map<String, String>> list(){
         return  Arrays.stream(AnimalCategoryEnum.class.getEnumConstants())
-                .map(e -> Map.of("id", e.name(), "descricao", e.getDescription()))
+                .map(e -> Map.of("id", e.name(), "description", e.getDescription()))
                 .collect(Collectors.toList());
     }
 

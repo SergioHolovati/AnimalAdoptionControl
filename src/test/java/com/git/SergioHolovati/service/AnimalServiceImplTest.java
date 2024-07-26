@@ -2,6 +2,7 @@ package com.git.SergioHolovati.service;
 
 import com.git.SergioHolovati.dto.AnimalDTO;
 import com.git.SergioHolovati.dto.AnimalRequestDTO;
+import com.git.SergioHolovati.dto.AnimalStatusDTO;
 import com.git.SergioHolovati.dto.FilterDTO;
 import com.git.SergioHolovati.enums.AnimalCategoryEnum;
 import com.git.SergioHolovati.enums.AnimalStatusEnum;
@@ -102,8 +103,9 @@ class AnimalServiceImplTest {
     void updateStatus_Success() throws ChangeSetPersister.NotFoundException {
         when(repository.findById("1")).thenReturn(Optional.of(animal));
         when(repository.save(animal)).thenReturn(animal);
+        AnimalStatusDTO animalStatusDTO = new AnimalStatusDTO(AnimalStatusEnum.ADOPTED);
 
-        AnimalDTO updatedAnimal = service.updateStatus("1", AnimalStatusEnum.ADOPTED);
+        AnimalDTO updatedAnimal = service.updateStatus("1", animalStatusDTO);
 
         assertNotNull(updatedAnimal);
         assertEquals(AnimalStatusEnum.ADOPTED.getDescription(), updatedAnimal.getStatus());
@@ -114,7 +116,8 @@ class AnimalServiceImplTest {
     void updateStatus_NotFound() {
         when(repository.findById("1")).thenReturn(Optional.empty());
 
-        assertThrows(ChangeSetPersister.NotFoundException.class, () -> service.updateStatus("1", AnimalStatusEnum.ADOPTED));
+        AnimalStatusDTO animalStatusDTO = new AnimalStatusDTO(AnimalStatusEnum.ADOPTED);
+        assertThrows(ChangeSetPersister.NotFoundException.class, () -> service.updateStatus("1", animalStatusDTO));
     }
 
 }

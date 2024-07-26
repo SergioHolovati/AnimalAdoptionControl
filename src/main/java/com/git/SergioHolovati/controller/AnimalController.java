@@ -2,6 +2,7 @@ package com.git.SergioHolovati.controller;
 
 import com.git.SergioHolovati.dto.AnimalDTO;
 import com.git.SergioHolovati.dto.AnimalRequestDTO;
+import com.git.SergioHolovati.dto.AnimalStatusDTO;
 import com.git.SergioHolovati.dto.FilterDTO;
 import com.git.SergioHolovati.enums.AnimalCategoryEnum;
 import com.git.SergioHolovati.enums.AnimalStatusEnum;
@@ -73,8 +74,8 @@ public class AnimalController {
 
     @PutMapping("/{id}/status")
     public AnimalDTO updateStatus(@PathVariable String id,
-                                  @RequestBody AnimalStatusEnum statusEnum) throws ChangeSetPersister.NotFoundException {
-        return service.updateStatus(id,statusEnum);
+                                  @RequestBody AnimalStatusDTO animalStatus) throws ChangeSetPersister.NotFoundException {
+        return service.updateStatus(id,animalStatus);
     }
 
     @GetMapping("/status")
